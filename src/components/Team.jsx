@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TeamCard from "./TeamCard";
+import { getTeam } from "../supabase/client";
 
 const Team = () => {
+  const [team, setTeam] = useState([]);
+
+  const fetchTeam = async () => {
+    const data = await getTeam();
+    setTeam(data);
+  };
+  useEffect(() => {
+    fetchTeam();
+  }, []);
   return (
     <section id="team" className="py-20">
       <div className="container mx-auto px-4">
@@ -19,30 +29,17 @@ const Team = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* Team Member Card */}
-          <TeamCard
-            name="Yashwanth Kasini"
-            designation="Founder & CEO"
-            bio="Yashwanth Kasini is the visionary behind StayX, leading the
-              company as its Founder & CEO."
-            image="https://media.licdn.com/dms/image/v2/D5603AQH8lWCr6ZXzKw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1695671444903?e=1746057600&v=beta&t=qwEdDBfZZ6EPdPzS4Wjxvr8u4yfbNpJjeQrhYq5db6c"
-            linkedin="https://www.linkedin.com/in/yashwanthsairaja/"
-          />
-          <TeamCard
-            name="Yashash Kasini"
-            designation="Co-Founder, Product & Design"
-            bio="Yashwanth Kasini is the visionary behind StayX, leading the
-              company as its Founder & CEO."
-            image="https://media.licdn.com/dms/image/v2/D4D03AQGwCoRAqWXRGw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1677942350248?e=1746057600&v=beta&t=QCb7K9LR1O4rfRBxAZI75FeFkgVsyTEywQ-OX3GnvsE"
-            linkedin="https://www.linkedin.com/in/yashashkasini/"
-          />
-          <TeamCard
-            name="Manohar Kakumani"
-            designation="Co-Founder, CTO"
-            bio="Manohar Kakumani is the visionary behind StayX, leading the
-              company as its Founder & CEO."
-            image="https://th.bing.com/th/id/OIP.ta1LlTk0ncRcri23kiBrzQHaHa?rs=1&pid=ImgDetMain"
-            linkedin="https://www.linkedin.com/in/manoharkakumani/"
-          />
+          {team.length > 0 &&
+            team.map((member) => (
+              <TeamCard
+                key={member.id}
+                name={member.name}
+                designation={member.designation}
+                bio={member.bio}
+                image={member.image}
+                linkedin={member.social?.linkedin}
+              />
+            ))}
         </div>
       </div>
     </section>

@@ -50,7 +50,7 @@ const CountdownTimer = ({ targetDate = "2025-12-31T23:59:59" }) => {
 
   return (
     <div className="countdown">
-      {timeComponents.length ? timeComponents : <span>Time's up!</span>}
+      {timeComponents.length && timeComponents}
 
       <style jsx="true">{`
         .countdown {

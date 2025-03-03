@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CountdownTimer from "./CountdownTimer";
 import EmailSubscribe from "./EmailSubscribe";
 import Background from "./Background";
+import { getLaunchDate } from "../supabase/client";
 
 const Hero = () => {
+  const [launchDate, setLaunchDate] = useState("");
+  useEffect(() => {
+    const fetchLaunchDate = async () => {
+      const date = await getLaunchDate();
+      setLaunchDate(date);
+    };
+    fetchLaunchDate();
+  }, []);
   return (
     <section className="py-20 text-center relative">
       {/* Background Effects */}
@@ -24,7 +33,7 @@ const Hero = () => {
           manage your stays.
         </p>
 
-        <CountdownTimer />
+        <CountdownTimer targetDate={launchDate} />
 
         <div className="mt-16">
           <EmailSubscribe />

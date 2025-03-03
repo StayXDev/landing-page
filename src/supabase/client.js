@@ -6,6 +6,41 @@ export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_KEY
 );
 
+// get constants
+export const getConstants = async () => {
+  const { data: constants, error } = await supabase
+    .from("constants")
+    .select("*");
+  if (error) {
+    console.log(error);
+  }
+  return constants;
+};
+
+// get launchdate from constants where key = launchdate
+export const getLaunchDate = async () => {
+  const { data: launchdate, error } = await supabase
+    .from("constants")
+    .select("value")
+    .eq("key", "launchdate");
+  if (error) {
+    console.log(error);
+  }
+  return launchdate.value;
+};
+
+// get team
+export const getTeam = async () => {
+  const { data: team, error } = await supabase
+    .from("team")
+    .select("*")
+    .order("created_at", { ascending: true });
+  if (error) {
+    console.log(error);
+  }
+  return team;
+};
+
 // insert resume s3
 export const insertResume = async (file, name) => {
   // Upload file to bucket
