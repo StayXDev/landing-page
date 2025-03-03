@@ -1,11 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getSocialLinks } from "../supabase/client";
+import logo from "../assets/Logo.svg";
 
 const Header = () => {
+  const [socialLinks, setSocialLinks] = useState([]);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const fetchSocialLinks = async () => {
+      const links = await getSocialLinks();
+      setSocialLinks(links);
+    };
+    fetchSocialLinks();
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="py-6">
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-inherit">
       <div className="container mx-auto px-4 flex justify-between items-center">
         <div className="text-2xl font-bold text-white">
-          Stay<span className="text-[#f58220]">X</span>
+          <a href="#">
+            <img src={logo} alt="logo" className="w-20" />
+          </a>
         </div>
 
         <nav className="hidden md:flex gap-10">
@@ -31,7 +53,7 @@ const Header = () => {
 
         <div className="flex gap-4">
           <a
-            href="#"
+            href={socialLinks?.facebook}
             className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full text-white hover:bg-[#f58220] hover:-translate-y-1 transition-all duration-300"
           >
             <svg
@@ -45,7 +67,7 @@ const Header = () => {
             </svg>
           </a>
           <a
-            href="#"
+            href={socialLinks?.twitter}
             className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full text-white hover:bg-[#f58220] hover:-translate-y-1 transition-all duration-300"
           >
             <svg
@@ -59,7 +81,7 @@ const Header = () => {
             </svg>
           </a>
           <a
-            href="#"
+            href={socialLinks?.instagram}
             className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full text-white hover:bg-[#f58220] hover:-translate-y-1 transition-all duration-300"
           >
             <svg

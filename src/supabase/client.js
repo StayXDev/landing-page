@@ -29,6 +29,19 @@ export const getLaunchDate = async () => {
   return launchdate.value;
 };
 
+// get social links
+
+export const getSocialLinks = async () => {
+  const { data: socialLinks, error } = await supabase
+    .from("constants")
+    .select("*")
+    .eq("key", "social");
+  if (error) {
+    console.log(error);
+  }
+  return socialLinks;
+};
+
 // get team
 export const getTeam = async () => {
   const { data: team, error } = await supabase
